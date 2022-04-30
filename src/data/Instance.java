@@ -1,9 +1,10 @@
 package data;
 
-import java.io.*;
+import java.util.ArrayList;
 
 public class Instance {
-    private double[] flowerParams;
+	// Atributos
+    private ArrayList<Double> flowerParams;
     private String flowerName;
 
     // Constructor
@@ -12,33 +13,18 @@ public class Instance {
     	for(double param : this.flowerParams) {
     		param = 0;
     	}
-    }
-    public Instance(String line) {
-        String[] tokens = line.split(",");
-        this.flowerParams = new double[tokens.length-1];
-        for (int i = 0; i < flowerParams.length; i++) {
-            flowerParams[i] = Double.parseDouble(tokens[i]);
-        }
-        this.flowerName = tokens[tokens.length-1];
-    }
-    public Instance(String flowerName, double[] flowerParams) {
+    }    
+    public Instance(String flowerName, ArrayList<Double> flowerParams) {
         this.flowerName = flowerName;
         this.flowerParams = flowerParams;
     }
-    public void Read(BufferedReader br) throws IOException {
-        String line = br.readLine();
-        String[] tokens = line.split(",");
-        this.flowerParams = new double[tokens.length - 1];
-        for (int i = 0; i < flowerParams.length; i++) {
-            flowerParams[i] = Double.parseDouble(tokens[i]);
-        }
-        this.flowerName = tokens[tokens.length];
-    }
+    // Metodos
     public void Write() {
     	System.out.print("Características: ");
     	for(double param : this.flowerParams) {
     		System.out.print(param + " ");
     	}
-    	System.out.println("Nombre: " this.flowerName);
+    	
+    	System.out.println("Nombre: " + this.flowerName);
     }
 }
