@@ -64,9 +64,11 @@ public class Dataset {
 	}
 
 	public void Write() {
-		System.out.println(titulo);
-		for (Attribute atr : attributes) {
-			atr.Write();
+		String[] tempArr;
+		tempArr = titulo.split(delimiter);
+		for (int i = 0; i < numAttributes; i++) {
+			System.out.println(tempArr[i] + ":");
+			attributes.get(i).Write();
 		}
 	}
 }
