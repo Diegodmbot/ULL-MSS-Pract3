@@ -5,11 +5,16 @@ import data.*;
 
 public class Environment {
 	// Atributos
-	ArrayList<Instance> neighbourds;
-	int numNeighbourds;
+	ArrayList<Instance> instances;
+	int numInstances;
 	//Constructor
 	Environment(){
-		neighbourds = new ArrayList<Instance>();
-		numNeighbourds = 0;
+		instances = new ArrayList<Instance>();
+		numInstances = 0;
 	}
+	Environment(ArrayList<Instance> instances){
+		this.instances = instances;
+		this.numInstances = instances.size();
+	}
+	// Metodos
 }

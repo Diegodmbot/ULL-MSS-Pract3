@@ -14,11 +14,17 @@ public class Instance {
     		param = 0;
     	}
     }    
-    public Instance(String flowerName, ArrayList<Double> flowerParams) {
-        this.flowerName = flowerName;
+    public Instance(ArrayList<Double> flowerParams) {
         this.flowerParams = flowerParams;
+        this.flowerName = "";
     }
     // Metodos
+    public double GetParam(int i) {
+    	return flowerParams.get(i);
+    }
+    public String GetName() {
+    	return flowerName;
+    }
     public void Write() {
     	System.out.print("Características: ");
     	for(double param : this.flowerParams) {

@@ -8,27 +8,41 @@ public class Dataset {
 	public static final String delimiter = ",";
 	ArrayList<Attribute> attributes;
 	String titulo;
-	int numInstances; // no aplicado
 	int numAttributes;
-
+	int numInstances;
 	// Constructor
 	public Dataset() {
 		attributes = new ArrayList<Attribute>();
 		titulo = "";
 		numAttributes = 0;
+		numInstances = 0;
 	}
 
 	public Dataset(String filename) {
 		Read(filename);
 	}
-
-	public Dataset(ArrayList<Attribute> attributes) {
-		this.attributes = attributes;
-		numAttributes = attributes.size();
-		titulo = "";
-	}
 	
 	// Metodos
+	public String getTitulo() {
+		return titulo;
+	}
+	public int getAttributes() {
+		return numAttributes;
+	}
+	public void Normalize() {
+		numInstances++;
+		for(int i = 0; i < numAttributes-1; i++) {
+			attributes.get(i).Normalize();
+		}
+	}
+	public void Add(Instance ins) {
+		String tempStr;
+		for(int i = 0; i < numAttributes-1; i++) {
+			tempStr = ins.GetParam(i) +"";
+			attributes.get(i).Add(tempStr);
+		}
+		attributes.get(numAttributes-1).Add(ins.GetName());
+	}
 	void Read(String fileName) {
 		try {
             FileReader fr = new FileReader(fileName);
@@ -41,7 +55,7 @@ public class Dataset {
 			numAttributes = tempArr.length;
 			attributes = new ArrayList<Attribute>();
 			/*
-			 * Crea los ArrayList según cuantos elemntos haya
+			 * Crea los ArrayList según los elementos que haya
 			 */
 			for(int i = 0; i < numAttributes - 1; i++) {
 				attributes.add(new Attribute_Numeric());
@@ -56,19 +70,20 @@ public class Dataset {
             		attributes.get(i).Add(tempArr[i]);
             	}
             }
+            numInstances = attributes.get(0).Size();
             br.close();
             fr.close();
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
 		}
 	}
-
 	public void Write() {
-		String[] tempArr;
-		tempArr = titulo.split(delimiter);
-		for (int i = 0; i < numAttributes; i++) {
-			System.out.println(tempArr[i] + ":");
-			attributes.get(i).Write();
+		System.out.println(titulo);
+		for(int i = 0; i < numInstances; i++) {
+			for(int j = 0;j < numAttributes; j++) {				
+				attributes.get(j).Write(i);
+			}
+			System.out.println();
 		}
 	}
 }
