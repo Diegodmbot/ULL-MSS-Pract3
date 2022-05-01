@@ -40,4 +40,6 @@ public abstract class Attribute {
 	}
 	public abstract void Normalize();
 	public abstract void Add(String str);
+	public abstract Double NormalizeVal(double val);
+
 }

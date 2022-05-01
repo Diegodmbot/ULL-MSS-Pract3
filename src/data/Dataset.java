@@ -30,12 +30,20 @@ public class Dataset {
 		return numAttributes;
 	}
 	public void Normalize() {
-		numInstances++;
 		for(int i = 0; i < numAttributes-1; i++) {
 			attributes.get(i).Normalize();
 		}
 	}
+	public ArrayList<Double> NormalizeIns(ArrayList<Double> ins) {
+		double tempDouble;
+		for(int i = 0; i < numAttributes-1; i++) {
+			tempDouble = ins.get(i);
+			ins.set(i, attributes.get(i).NormalizeVal(tempDouble));
+		}
+		return ins;
+	}
 	public void Add(Instance ins) {
+		numInstances++;
 		String tempStr;
 		for(int i = 0; i < numAttributes-1; i++) {
 			tempStr = ins.GetParam(i) +"";

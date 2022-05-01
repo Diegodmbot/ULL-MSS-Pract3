@@ -14,4 +14,8 @@ public class Attribute_Qualitative extends Attribute{
 	}
 	@Override
 	public void Normalize() {}
+	@Override
+	public Double NormalizeVal(double val) {
+		return null;
+	}
 }

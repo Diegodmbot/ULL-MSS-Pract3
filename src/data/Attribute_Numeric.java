@@ -7,6 +7,7 @@ public class Attribute_Numeric extends Attribute {
 	// Atributos
 	double max_;
 	double min_;
+	double denominator;
 	// Constructor
 	Attribute_Numeric(){
 		value_ = new ArrayList<Double>();
@@ -26,10 +27,13 @@ public class Attribute_Numeric extends Attribute {
 			if(tempDouble > max_) max_ = tempDouble;
 			if(tempDouble < min_) min_ = tempDouble;
 		}
-		double denominator = max_ - min_;
-		DecimalFormat df = new DecimalFormat("#.###");
+		this.denominator = max_ - min_;
 		for(int i = 0; i < value_.size(); i++) {
-			value_.set(i, df.format(((double)value_.get(i) - min_) / denominator));
+			value_.set(i, NormalizeVal((double)value_.get(i)));
 		}
+	}
+	@Override
+	public Double NormalizeVal(double val) {
+		return (val - min_) / denominator;
 	}
 }
