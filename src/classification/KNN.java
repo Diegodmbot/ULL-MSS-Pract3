@@ -51,6 +51,7 @@ public class KNN {
                     max = j;
                 }
             }
+            // guarda los indices de las instancias más cercanas a ins
             nearestNeighbours.add(max);
             distancesToIns.remove(max);
         }		
@@ -58,10 +59,21 @@ public class KNN {
 		 * Hacer un conteo de las clases dentro de este conjunto y asignar al nuevo dato
 		 * la clase más repetida
 		 */
-		
-		for(int i = 0; i < k; i++) {
-		// usar dos variables count y maxcount = 0	
+		int count, maxCount = 0;
+		ArrayList<String> types = data_.getTypes();
+		String output = new String();
+		for(int i = 0; i < types.size(); i++) {
+			count = 0;
+			for(int j = 0; j < k;j++) {
+				// tempStr guarda el tipo del valor con el indice guardado en nearestNeighbours
+				String tempStr = data_.getType(nearestNeighbours.get(i));
+				if(types.get(i).equals("a")) count++;
+			}
+			if(count >= maxCount) {
+				maxCount = count;
+				output = types.get(i);
+			}
 		}
-		return null;
+		return output;
 	}
 }

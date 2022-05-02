@@ -27,6 +27,9 @@ public abstract class Attribute {
 	public void setIndex(int index) {
 		this.index = index;
 	}
+	public Object getValue_(int i) {
+		return value_.get(i);
+	}
 	public int Size() {
 		return value_.size();
 	}

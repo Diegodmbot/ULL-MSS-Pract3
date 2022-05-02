@@ -4,16 +4,25 @@ import java.io.*;
 import java.util.*;
 
 public class Dataset {
-	// Atributos
-	public static final String delimiter = ",";
+	/*
+	 * Atributos
+	 */
+	public static final String DELIMETER = ",";
+	// cada espacio del array es una columna del fichero csv
 	ArrayList<Attribute> attributes;
+	// guarda los distintos tipos de flores
+	ArrayList<String> types;
+	//
 	String titulo;
 	int numAttributes;
 	int numInstances;
 
-	// Constructor
+	/*
+	 * Constructor
+	 */
 	public Dataset() {
 		attributes = new ArrayList<Attribute>();
+		types = new ArrayList<String>();
 		titulo = "";
 		numAttributes = 0;
 		numInstances = 0;
@@ -23,7 +32,9 @@ public class Dataset {
 		read(filename);
 	}
 
-	// Metodos
+	/*
+	 * Metodos
+	 */
 	public String getTitulo() {
 		return titulo;
 	}
@@ -36,12 +47,20 @@ public class Dataset {
 		return numInstances;
 	}
 
+	public ArrayList<String> getTypes() {
+		return types;
+	}
+	
+	public String getType(int i) {
+		return (String) attributes.get(numAttributes-1).getValue_(i);
+	}
+
 	public ArrayList<Double> getInstance(int ins) {
 		ArrayList<Double> output = new ArrayList<Double>();
-		for (int i = 0; i < numAttributes - 1;i++) {
+		for (int i = 0; i < numAttributes - 1; i++) {
 			output.add((Double) attributes.get(i).value_.get(ins));
 		}
-			return output;
+		return output;
 	}
 
 	public void normalize() {
@@ -77,23 +96,22 @@ public class Dataset {
 			this.titulo = line;
 			// Guarda cada valor de la linea en string separados
 			String[] tempArr;
-			tempArr = line.split(delimiter);
+			tempArr = line.split(DELIMETER);
 			numAttributes = tempArr.length;
 			attributes = new ArrayList<Attribute>();
-			/*
-			 * Crea los ArrayList según los elementos que haya
-			 */
+			types = new ArrayList<String>();
+			// Crea los ArrayList según los elementos que haya
 			for (int i = 0; i < numAttributes - 1; i++) {
 				attributes.add(new Attribute_Numeric());
 			}
 			attributes.add(new Attribute_Qualitative());
-			/*
-			 * Lee cada linea y almacena cada valor en su respectivo atributo
-			 */
+			// Lee cada linea y almacena cada valor en su respectivo atributo
 			while ((line = br.readLine()) != null) {
-				tempArr = line.split(delimiter);
+				tempArr = line.split(DELIMETER);
 				for (int i = 0; i < numAttributes; i++) {
 					attributes.get(i).Add(tempArr[i]);
+					if (i == numAttributes - 1)
+						addType(tempArr[i]);
 				}
 			}
 			numInstances = attributes.get(0).Size();
@@ -112,5 +130,15 @@ public class Dataset {
 			}
 			System.out.println();
 		}
+	}
+
+	private void addType(String s) {
+		int count = 0;
+		for (String str : types) {
+			if (str.equals(s))
+				count++;
+		}
+		if (count == 0)
+			types.add(s);
 	}
 }

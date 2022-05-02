@@ -12,11 +12,8 @@ public class main {
 		System.out.print("Introduce el nombre del fichero csv: ");
 		String fileName = sc.nextLine();
 		Dataset iris = new Dataset(fileName);
-		iris.write();
 		// normalizar
 		iris.normalize();
-		System.out.print("Datos normalizados: ");
-		iris.write();
 		// características para analizar
 		System.out.println("Introduce los datos para analizar: ");
 		String tempArr[] = iris.getTitulo().split(",");
@@ -29,9 +26,6 @@ public class main {
 		}
 		// normalizar ins1
 		Instance ins1 = new Instance(iris.normalizeIns(values));
-		ins1.Write();
-		System.out.println("Instancia 1: ");
-		System.out.println(iris.getInstance(1));
 		// buscar los k vecinos
 		System.out.print("Introduzca los k vecinos para analizar: ");
 		int k = sc.nextInt();
@@ -40,5 +34,7 @@ public class main {
 		System.out.println("1.- Euclidea");
 		int dist = sc.nextInt();
 		KNN knn_ = new KNN(dist);
+		String output = knn_.predictType(iris, k, ins1);
+		System.out.println(output);
 	}
 }
