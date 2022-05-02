@@ -19,6 +19,9 @@ public class Instance {
         this.flowerName = "";
     }
     // Metodos
+    public ArrayList<Double> GetParams(){
+    	return flowerParams;
+    }
     public double GetParam(int i) {
     	return flowerParams.get(i);
     }

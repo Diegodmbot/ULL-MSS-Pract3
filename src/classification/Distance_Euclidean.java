@@ -2,7 +2,7 @@ package classification;
 
 import java.util.ArrayList;
 
-public class Euclidean extends Distance{
+public class Distance_Euclidean extends Distance{
 	@Override
 	public double calculateDistance(ArrayList<Double> p1, ArrayList<Double> p2) {
 		double output = 0.0;
