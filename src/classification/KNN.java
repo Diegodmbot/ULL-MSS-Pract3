@@ -66,8 +66,8 @@ public class KNN {
 			count = 0;
 			for(int j = 0; j < k;j++) {
 				// tempStr guarda el tipo del valor con el indice guardado en nearestNeighbours
-				String tempStr = data_.getType(nearestNeighbours.get(i));
-				if(types.get(i).equals("a")) count++;
+				String tempStr = data_.getType(nearestNeighbours.get(j));
+				if(types.get(i).equals(tempStr)) count++;
 			}
 			if(count >= maxCount) {
 				maxCount = count;

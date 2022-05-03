@@ -10,6 +10,8 @@ public class Dataset {
 	public static final String DELIMETER = ",";
 	// cada espacio del array es una columna del fichero csv
 	ArrayList<Attribute> attributes;
+	// atributos normalizados
+	ArrayList<Attribute> normalizedAttributes;
 	// guarda los distintos tipos de flores
 	ArrayList<String> types;
 	//
@@ -22,6 +24,7 @@ public class Dataset {
 	 */
 	public Dataset() {
 		attributes = new ArrayList<Attribute>();
+		normalizedAttributes = new ArrayList<Attribute>();
 		types = new ArrayList<String>();
 		titulo = "";
 		numAttributes = 0;
@@ -52,20 +55,20 @@ public class Dataset {
 	}
 	
 	public String getType(int i) {
-		return (String) attributes.get(numAttributes-1).getValue_(i);
+		return (String) normalizedAttributes.get(numAttributes-1).getValue_(i);
 	}
 
 	public ArrayList<Double> getInstance(int ins) {
 		ArrayList<Double> output = new ArrayList<Double>();
 		for (int i = 0; i < numAttributes - 1; i++) {
-			output.add((Double) attributes.get(i).value_.get(ins));
+			output.add((Double) normalizedAttributes.get(i).value_.get(ins));
 		}
 		return output;
 	}
 
 	public void normalize() {
 		for (int i = 0; i < numAttributes - 1; i++) {
-			attributes.get(i).Normalize();
+			normalizedAttributes.get(i).Normalize();
 		}
 	}
 
@@ -73,19 +76,9 @@ public class Dataset {
 		double tempDouble;
 		for (int i = 0; i < numAttributes - 1; i++) {
 			tempDouble = ins.get(i);
-			ins.set(i, attributes.get(i).NormalizeVal(tempDouble));
+			ins.set(i, normalizedAttributes.get(i).NormalizeVal(tempDouble));
 		}
 		return ins;
-	}
-
-	public void add(Instance ins) {
-		numInstances++;
-		String tempStr;
-		for (int i = 0; i < numAttributes - 1; i++) {
-			tempStr = ins.GetParam(i) + "";
-			attributes.get(i).Add(tempStr);
-		}
-		attributes.get(numAttributes - 1).Add(ins.GetName());
 	}
 
 	void read(String fileName) {
@@ -110,10 +103,13 @@ public class Dataset {
 				tempArr = line.split(DELIMETER);
 				for (int i = 0; i < numAttributes; i++) {
 					attributes.get(i).Add(tempArr[i]);
+					// contar los tipos de flores
 					if (i == numAttributes - 1)
 						addType(tempArr[i]);
 				}
 			}
+			normalizedAttributes = new ArrayList<>(attributes);
+			normalize();
 			numInstances = attributes.get(0).Size();
 			br.close();
 			fr.close();
@@ -127,6 +123,16 @@ public class Dataset {
 		for (int i = 0; i < numInstances; i++) {
 			for (int j = 0; j < numAttributes; j++) {
 				attributes.get(j).Write(i);
+			}
+			System.out.println();
+		}
+	}
+
+	public void writeNormalized() {
+		System.out.println(titulo);
+		for (int i = 0; i < numInstances; i++) {
+			for (int j = 0; j < numAttributes; j++) {
+				normalizedAttributes.get(j).Write(i);
 			}
 			System.out.println();
 		}
