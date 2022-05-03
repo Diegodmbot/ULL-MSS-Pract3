@@ -91,24 +91,27 @@ public class Dataset {
 			String[] tempArr;
 			tempArr = line.split(DELIMETER);
 			numAttributes = tempArr.length;
-			attributes = new ArrayList<Attribute>();
-			types = new ArrayList<String>();
+			attributes = new ArrayList<>();
+			normalizedAttributes = new ArrayList<>();
+			types = new ArrayList<>();
 			// Crea los ArrayList según los elementos que haya
 			for (int i = 0; i < numAttributes - 1; i++) {
 				attributes.add(new Attribute_Numeric());
+				normalizedAttributes.add(new Attribute_Numeric());
 			}
 			attributes.add(new Attribute_Qualitative());
+			normalizedAttributes.add(new Attribute_Qualitative());
 			// Lee cada linea y almacena cada valor en su respectivo atributo
 			while ((line = br.readLine()) != null) {
 				tempArr = line.split(DELIMETER);
 				for (int i = 0; i < numAttributes; i++) {
 					attributes.get(i).Add(tempArr[i]);
+					normalizedAttributes.get(i).Add(tempArr[i]);
 					// contar los tipos de flores
 					if (i == numAttributes - 1)
 						addType(tempArr[i]);
 				}
 			}
-			normalizedAttributes = new ArrayList<>(attributes);
 			normalize();
 			numInstances = attributes.get(0).Size();
 			br.close();
