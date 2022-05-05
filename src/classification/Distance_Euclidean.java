@@ -9,7 +9,7 @@ public class Distance_Euclidean extends Distance{
 		for(int i = 0; i < p1.size(); i++) {
 			output += Math.pow(p1.get(i) - p2.get(i), 2);
 		}
-		Math.sqrt(output);
+		output = Math.sqrt(output);
 		return output;
 	}
 

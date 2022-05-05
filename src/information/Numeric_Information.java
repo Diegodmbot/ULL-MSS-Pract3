@@ -1,6 +1,6 @@
 package information;
 
-public interface NumericInformation {
+public interface Numeric_Information {
     public  double getMin_();
     public  double getMax_();
     public  double getAvg();

@@ -1,14 +1,14 @@
 package data;
 
-import java.util.ArrayList;
-
 public interface Attribute {
     // Metodos
-    public  Object getValue_(int i);
+    Object getValue_(int i);
 
-    public  int Size();
+    void setValue_(int i, Object value);
 
-    public void Write(int i);
+    int sizeVal();
 
-    public void Add(String str);
+    void writeAttrib(int i);
+
+    void addAttrib(String str);
 }

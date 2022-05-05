@@ -9,12 +9,7 @@ public class Environment {
 	int numInstances;
 	//Constructor
 	Environment(){
-		instances = new ArrayList<Instance>();
+		instances = new ArrayList<>();
 		numInstances = 0;
 	}
-	Environment(ArrayList<Instance> instances){
-		this.instances = instances;
-		this.numInstances = instances.size();
-	}
-	// Metodos
 }

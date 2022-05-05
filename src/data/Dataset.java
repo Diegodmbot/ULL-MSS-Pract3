@@ -11,25 +11,27 @@ public class Dataset {
     // cada espacio del array es una columna del fichero csv
     ArrayList<Attribute_Numeric> attributes;
     // atributos normalizados
-    ArrayList<Attribute_Numeric> normalizedAttributes;
+    ArrayList<Attribute_Numeric> preprocessedAttributes;
     // atributos cualitativos
-    Attribute_Qualitative qualitativeAttributes;
+    ArrayList<Attribute_Qualitative> qualitativeAttributes;
     // guarda los distintos tipos de flores
     ArrayList<String> types;
     //
     String titulo;
     int numAttributes;
+    int numQualitativeAttributes;
     int numInstances;
 
     /*
      * Constructor
      */
     public Dataset() {
-        attributes = new ArrayList<Attribute_Numeric>();
-        normalizedAttributes = new ArrayList<Attribute_Numeric>();
-        types = new ArrayList<String>();
+        attributes = new ArrayList<>();
+        preprocessedAttributes = new ArrayList<>();
+        types = new ArrayList<>();
         titulo = "";
         numAttributes = 0;
+        numQualitativeAttributes = 0;
         numInstances = 0;
     }
 
@@ -42,6 +44,10 @@ public class Dataset {
      */
     public String getTitulo() {
         return titulo;
+    }
+
+    public int getNumQualitativeAttributes() {
+        return numQualitativeAttributes;
     }
 
     public int getNumAttributes() {
@@ -57,20 +63,26 @@ public class Dataset {
     }
 
     public String getType(int i) {
-        return (String) normalizedAttributes.get(numAttributes - 1).getValue_(i);
+        return (String) qualitativeAttributes.get(numQualitativeAttributes - 1).getValue_(i);
     }
 
     public ArrayList<Double> getInstance(int ins) {
-        ArrayList<Double> output = new ArrayList<Double>();
+        ArrayList<Double> output = new ArrayList<>();
         for (int i = 0; i < numAttributes - 1; i++) {
-            output.add((Double) normalizedAttributes.get(i).value_.get(ins));
+            output.add(preprocessedAttributes.get(i).value_.get(ins));
         }
         return output;
     }
 
     public void normalize() {
         for (int i = 0; i < numAttributes - 1; i++) {
-            normalizedAttributes.get(i).Normalize();
+            preprocessedAttributes.get(i).normalize();
+        }
+    }
+
+    public void standardize() {
+        for (int i = 0; i < numAttributes - 1; i++) {
+            preprocessedAttributes.get(i).standarize();
         }
     }
 
@@ -78,7 +90,16 @@ public class Dataset {
         double tempDouble;
         for (int i = 0; i < numAttributes - 1; i++) {
             tempDouble = ins.get(i);
-            ins.set(i, normalizedAttributes.get(i).NormalizeVal(tempDouble));
+            ins.set(i, preprocessedAttributes.get(i).normalizeVal(tempDouble));
+        }
+        return ins;
+    }
+
+    public ArrayList<Double> standardizeIns(ArrayList<Double> ins) {
+        double tempDouble;
+        for (int i = 0; i < numAttributes - 1; i++) {
+            tempDouble = ins.get(i);
+            ins.set(i, preprocessedAttributes.get(i).standarizeVal(tempDouble));
         }
         return ins;
     }
@@ -94,28 +115,29 @@ public class Dataset {
         numAttributes = tempArr.length;
         // Crea los ArrayList según los elementos que haya
         attributes = new ArrayList<>(numAttributes - 1);
-        normalizedAttributes = new ArrayList<Attribute_Numeric>(numAttributes - 1);
-        qualitativeAttributes = new Attribute_Qualitative();
+        preprocessedAttributes = new ArrayList<>(numAttributes - 1);
+        qualitativeAttributes = new ArrayList<>();
+        qualitativeAttributes.add(new Attribute_Qualitative());
         types = new ArrayList<>();
         for (int i = 0; i < numAttributes - 1; i++) {
             attributes.add(new Attribute_Numeric());
-            normalizedAttributes.add(new Attribute_Numeric());
+            preprocessedAttributes.add(new Attribute_Numeric());
         }
         // Lee cada linea y almacena cada valor en su respectivo atributo
         while ((line = br.readLine()) != null) {
             tempArr = line.split(DELIMETER);
             for (int i = 0; i < numAttributes; i++) {
-                if (i == numAttributes-1) {
-                    qualitativeAttributes.Add(tempArr[i]);
+                if (i == numAttributes -1) {
+                    qualitativeAttributes.get(0).addAttrib(tempArr[i]);
                     addType(tempArr[i]);
                 } else {
-                    attributes.get(i).Add(tempArr[i]);
-                    normalizedAttributes.get(i).Add(tempArr[i]);
+                    attributes.get(i).addAttrib(tempArr[i]);
+                    preprocessedAttributes.get(i).addAttrib(tempArr[i]);
                 }
             }
         }
-        normalize();
-        numInstances = attributes.get(0).Size();
+        numQualitativeAttributes = qualitativeAttributes.size();
+        numInstances = attributes.get(0).sizeVal();
         br.close();
         fr.close();
     }
@@ -124,20 +146,9 @@ public class Dataset {
         System.out.println(titulo);
         for (int i = 0; i < numInstances; i++) {
             for (int j = 0; j < numAttributes - 1; j++) {
-                attributes.get(j).Write(i);
+                attributes.get(j).writeAttrib(i);
             }
-            qualitativeAttributes.Write(i);
-            System.out.println();
-        }
-    }
-
-    public void writeNormalized() {
-        System.out.println(titulo);
-        for (int i = 0; i < numInstances; i++) {
-            for (int j = 0; j < numAttributes - 1; j++) {
-                normalizedAttributes.get(j).Write(i);
-            }
-            qualitativeAttributes.Write(i);
+            qualitativeAttributes.get(0).writeAttrib(i);
             System.out.println();
         }
     }
@@ -153,10 +164,17 @@ public class Dataset {
     }
 
     public void writeAtribInfo(int i) {
-        System.out.println("\tValores: " + attributes.get(i).Size());
+        attributes.get(i).calculateMaxMin();
+        System.out.println("\tValores: " + attributes.get(i).sizeVal());
         System.out.println("\tMin: " + attributes.get(i).getMin_());
         System.out.println("\tMax: " + attributes.get(i).getMax_());
         System.out.println("\tMedia: " + attributes.get(i).getAvg());
         System.out.println("\tDesviacion Tipica: " + attributes.get(i).getTypicalDesviation());
+    }
+
+    public void writeQualitativeInfo(int i) {
+        System.out.println("Nombre: " + types.get(i));
+        System.out.println("Frecuencia Relativa: " + qualitativeAttributes.get(0).getFrequency(types.get(i)));
+
     }
 }

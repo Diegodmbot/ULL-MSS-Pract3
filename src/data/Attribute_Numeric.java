@@ -1,95 +1,123 @@
 package data;
 
 import java.util.ArrayList;
+
 import information.*;
-import normalization.*;
+import preprocessed.*;
 
-public class Attribute_Numeric implements Attribute, Normalization, NumericInformation {
-	// Atributos
-	ArrayList<Double> value_;
-	double max_;
-	double min_;
-	double denominator;
-	// Constructor
-	Attribute_Numeric(){
-		value_ = new ArrayList<Double>();
-	}
+public class Attribute_Numeric implements Attribute, Numeric_Information {
+    /*
+     Atributos
+     */
+    Normalization normalization;
+    Standardization standardization;
+    ArrayList<Double> value_;
+    double max_;
+    double min_;
 
-	private void calculateMaxMin() {
-		this.max_ = (double) value_.get(0);
-		this.min_ = (double) value_.get(0);
-		double tempDouble = 0;
-		for(int i = 1; i < value_.size(); i++) {
-			tempDouble = (double) value_.get(i);
-			if(tempDouble > max_) max_ = tempDouble;
-			if(tempDouble < min_) min_ = tempDouble;
-		}
-	}
-	/*
-	Metodos de la clase Attribute
-	 */
-	@Override
-	public Object getValue_(int i) {
-		return value_.get(i);
-	}
+    /*
+    Constructor
+     */
+    Attribute_Numeric() {
+        value_ = new ArrayList<>();
+        normalization = new Normalization();
+        standardization = new Standardization();
+    }
 
-	@Override
-	public int Size() {
-		return value_.size();
-	}
+    /*
+    Metodos
+     */
+    public void calculateMaxMin() {
+        this.max_ =  value_.get(0);
+        this.min_ = value_.get(0);
+        double tempDouble;
+        for (int i = 1; i < value_.size(); i++) {
+            tempDouble = value_.get(i);
+            if (tempDouble > max_) max_ = tempDouble;
+            if (tempDouble < min_) min_ = tempDouble;
+        }
+    }
+    /*
+    Normalizacion
+     */
+    public void normalize(){
+        calculateMaxMin();
+        normalization.normalize(this);
+    }
 
-	@Override
-	public void Write(int i) {
-		System.out.print(value_.get(i) + " ");
-	}
+    public Double normalizeVal(double tempDouble) {
+        return normalization.normalizeVal(this, tempDouble);
+    }
+    /*
+    Estandarizacion
+     */
+    public void standarize(){
+        calculateMaxMin();
+        standardization.standardize(this);
+    }
 
-	@Override
-	public void Add(String str) {
-		value_.add(Double.parseDouble(str));
-	}
+    public Double standarizeVal(double tempDouble) {
+        return standardization.standardizeVal(this, tempDouble);
+    }
 
-	/*
-	Métodos de la clase NumericInformation
-	 */
-	@Override
-	public double getMax_() {
-		return max_;
-	}
-	@Override
-	public double getMin_() {
-		return min_;
-	}
-	@Override
-	public double getAvg(){
-		double media = 0;
-		for (int i = 0; i < value_.size(); i++) {
-			media += (double)value_.get(i);
-		}
-		return media/value_.size();
-	}
-	@Override
-	public double getTypicalDesviation() {
-		double media = getAvg();
-		double suma = 0;
-		for (int i = 0; i < value_.size(); i++) {
-			suma += Math.pow((double)value_.get(i) - media, 2);
-		}
-		return Math.sqrt(suma/value_.size());
-	}
+    /*
+    Metodos de la clase Attribute
+     */
+    @Override
+    public Object getValue_(int i) {
+        return value_.get(i);
+    }
 
-	/*
-	Métodos de la clase Normalization
-	 */
-	@Override
-	public void Normalize() {
-		calculateMaxMin();
-		this.denominator = max_ - min_;
-		for(int i = 0; i < value_.size(); i++) {
-			value_.set(i, NormalizeVal((double)value_.get(i)));
-		}
-	}
-	@Override
-	public Double NormalizeVal(double val) {
-		return (val - min_) / denominator;
-	}
+    @Override
+    public void setValue_(int i, Object value) {
+        value_.set(i, (double) value);
+    }
+
+    @Override
+    public int sizeVal() {
+        return value_.size();
+    }
+
+    @Override
+    public void writeAttrib(int i) {
+        System.out.print(value_.get(i) + " ");
+    }
+
+    @Override
+    public void addAttrib(String str) {
+        value_.add(Double.parseDouble(str));
+    }
+
+    /*
+    Métodos de la clase NumericInformation
+     */
+    @Override
+    public double getMax_() {
+        return max_;
+    }
+
+    @Override
+    public double getMin_() {
+        return min_;
+    }
+
+    @Override
+    public double getAvg() {
+        double media = 0;
+        for (Double aDouble : value_) {
+            media += aDouble;
+        }
+        return media / value_.size();
+    }
+
+    @Override
+    public double getTypicalDesviation() {
+        double media = getAvg();
+        double suma = 0;
+        for (Double aDouble : value_) {
+            suma += Math.pow(aDouble - media, 2);
+        }
+        return Math.sqrt(suma / value_.size());
+    }
+
 }

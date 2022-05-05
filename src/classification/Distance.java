@@ -1,6 +1,5 @@
 package classification;
 
-import java.lang.Math;
 import java.util.ArrayList;
 
 public abstract class Distance {
