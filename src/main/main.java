@@ -84,18 +84,11 @@ public class main {
             tempDouble = sc.nextDouble();
             values.add(tempDouble);
         }
-        Instance ins1 = null;
-        switch (option) {
-            case 1:
-                ins1 = new Instance(values);
-                break;
-            case 3:
-                ins1 = new Instance(iris.standardizeIns(values));
-                break;
-            default:
-                ins1 = new Instance(iris.normalizeIns(values));
-                break;
-        }
+        Instance ins1 = switch (option) {
+            case 1 -> new Instance(values);
+            case 3 -> new Instance(iris.standardizeIns(values));
+            default -> new Instance(iris.normalizeIns(values));
+        };
         // buscar los k vecinos
         System.out.print("Introduzca los k vecinos para analizar: ");
         int k = sc.nextInt();

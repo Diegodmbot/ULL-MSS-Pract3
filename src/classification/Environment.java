@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import data.*;
 
 public class Environment {
-	// Atributos
+	/*
+	 Atributos
+	 */
 	ArrayList<Instance> instances;
 	int numInstances;
 	//Constructor

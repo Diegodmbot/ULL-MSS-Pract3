@@ -1,7 +1,9 @@
 package data;
 
 public interface Attribute {
-    // Metodos
+    /*
+     Metodos
+     */
     Object getValue_(int i);
 
     void setValue_(int i, Object value);

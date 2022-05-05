@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import data.*;
 
 public class KNN {
-    // Atributos
+    /*
+     Atributos
+     */
     Environment neighbours;
     Distance distance_;
 
@@ -17,20 +19,16 @@ public class KNN {
 
     public KNN(int dist) {
         switch (dist) {
-            case 2:
-                this.distance_ = new Distance_Manhattan();
-                break;
-            case 3:
-                this.distance_ = new Distance_Chebyshev();
-                break;
-            default:
-                this.distance_ = new Distance_Euclidean();
-                break;
+            case 2 -> this.distance_ = new Distance_Manhattan();
+            case 3 -> this.distance_ = new Distance_Chebyshev();
+            default -> this.distance_ = new Distance_Euclidean();
         }
         neighbours = new Environment();
     }
 
-    // Metodos
+    /*
+     Metodos
+     */
     public String predictType(Dataset data_, int k, Instance ins) {
         /*
          * Buscar los k casos de data_ más cercanos a ins y almacenarlos en neighbourds
