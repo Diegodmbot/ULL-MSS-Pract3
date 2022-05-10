@@ -1,3 +1,8 @@
+/*
+ * Se implementa toda la prática 1
+ * De la práctica 2 no se implementa el pesado de atributos (punto 4), pesado de casos y reglas de clasificación(punto 5) y el punto 6 y 7
+ */
+
 package main;
 
 import java.util.ArrayList;
@@ -7,6 +12,11 @@ import classification.*;
 import data.*;
 
 public class main {
+    //  Valores por defecto
+    public static int k_ = 5;
+    public static int distance_ = 1;
+    public static int preprocceisng = 2;
+
     public static void main(String[] args) {
         try {
             Scanner sc = new Scanner(System.in);
@@ -25,18 +35,45 @@ public class main {
 
     // Menu
     public static void menu(Dataset iris) {
+        System.out.println();
+        System.out.println("/********************MENU******************/");
         System.out.println("1.- Mostrar datos");
         System.out.println("2.- Mostrar informacion sobre los atributos");
-        System.out.println("3.- Analizar");
-        System.out.println("4.- Salir");
+        System.out.println("3.- Mostrar valores de evaluacion");
+        System.out.println("4.- Analizar");
+        System.out.println("5.- Modificar valores de evaluacion");
+        System.out.println("6.- Salir");
         Scanner sc = new Scanner(System.in);
         int option = sc.nextInt();
         switch (option) {
             case 1 -> iris.write();
             case 2 -> writeInfo(iris);
-            case 3 -> analyzeData(iris);
-            case 4 -> System.exit(0);
+            case 3 -> writeEvaluation();
+            case 4 -> analyzeData(iris);
+            case 5 -> modifyEvaluation(iris);
+            case 6 -> System.exit(0);
         }
+    }
+
+    private static void modifyEvaluation(Dataset iris) {
+    }
+
+    private static void writeEvaluation() {
+        System.out.println("Valores de evaluacion: ");
+        System.out.print("Distancia: ");
+        switch(distance_) {
+            case 1 -> System.out.println("Euclidea");
+            case 2 -> System.out.println("Manhattan");
+            case 3 -> System.out.println("Chebycheff");
+        }
+        System.out.print("Preprocesado: ");
+        switch(preprocceisng) {
+            case 1 -> System.out.println("Sin preprocesamiento");
+            case 2 -> System.out.println("Normalizacion");
+            case 3 -> System.out.println("Estandarizacion");
+        }
+        System.out.println("K: " + k_);
+
     }
 
     // Mostrar información sobre los atributos

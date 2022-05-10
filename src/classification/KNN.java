@@ -10,6 +10,7 @@ public class KNN {
      */
     Environment neighbours;
     Distance distance_;
+    int k_;
 
     // Constructor
     public KNN() {
@@ -29,6 +30,7 @@ public class KNN {
     /*
      Metodos
      */
+
     public String predictType(Dataset data_, int k, Instance ins) {
         /*
          * Buscar los k casos de data_ más cercanos a ins y almacenarlos en neighbourds
